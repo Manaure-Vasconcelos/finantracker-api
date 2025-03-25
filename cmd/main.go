@@ -10,14 +10,16 @@ import (
 )
 
 func main() {
+
 	server := gin.Default()
 
-	dbConnection, err := db.ConnectDB()
+	dbConnectionPool, err := db.ConnectDB()
 	if err != nil {
 		panic(err)
 	}
+	defer dbConnectionPool.Close()
 
-	TransactionRepository := repository.NewTransactionRepository(dbConnection)
+	TransactionRepository := repository.NewTransactionRepository(dbConnectionPool)
 
 	TransactionUsecase := usecase.NewTransactionUsecase(TransactionRepository)
 

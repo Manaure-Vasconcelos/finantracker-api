@@ -2,15 +2,17 @@ package repository
 
 import (
 	"api-finantracker/src/model"
-	"database/sql"
+	"context"
 	"fmt"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type TransactionRepository struct {
-	connection *sql.DB
+	connection *pgxpool.Pool
 }
 
-func NewTransactionRepository(connection *sql.DB) TransactionRepository {
+func NewTransactionRepository(connection *pgxpool.Pool) TransactionRepository {
 	return TransactionRepository{
 		connection: connection,
 	}
@@ -18,12 +20,12 @@ func NewTransactionRepository(connection *sql.DB) TransactionRepository {
 
 func (pr *TransactionRepository) GetTransactions() ([]model.Transaction, error) {
 
-	query := "SELECT * FROM transactions"
-	rows, err := pr.connection.Query(query)
+	rows, err := pr.connection.Query(context.Background(), "SELECT * FROM transactions")
 	if err != nil {
 		fmt.Println(err)
 		return []model.Transaction{}, err
 	}
+	defer rows.Close()
 
 	var transactionList []model.Transaction
 	var transactionObj model.Transaction
@@ -37,8 +39,6 @@ func (pr *TransactionRepository) GetTransactions() ([]model.Transaction, error) 
 
 		transactionList = append(transactionList, transactionObj)
 	}
-
-	rows.Close()
 
 	return transactionList, nil
 }

@@ -1,35 +1,30 @@
 package db
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
+	"os"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "finantracker"
-	password = "finantracker"
-	dbName   = "finantracker_db"
-)
+func ConnectDB() (*pgxpool.Pool, error) {
 
-func ConnectDB() (*sql.DB, error) {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable", host, port, user, password, dbName)
-	db, err := sql.Open("postgres", psqlInfo)
+	db_url := "postgresql://finantracker:finantracker@localhost:5432/finantracker_db"
 
+	dbpool, err := pgxpool.New(context.Background(), db_url)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v\n", err)
+		os.Exit(1)
+	}
+
+	err = dbpool.Ping(context.Background())
 	if err != nil {
 		panic(err)
 	}
 
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
+	fmt.Println("Connected to db")
 
-	fmt.Println("Connected to" + dbName)
-
-	return db, nil
+	return dbpool, nil
 }
