@@ -7,7 +7,8 @@ type Transaction struct {
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
 	Amount      float64   `json:"amount"`
-	Type        string    `json:"type"` // income | expense
+	Type        string    `json:"type"`     // income | expense
 	Category    string    `json:"category"` // personal, work, home, dreams, bullshit, other
 	Date        time.Time `json:"date"`
+	CreatedAt   time.Time `json:"created_at"`
 }

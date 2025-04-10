@@ -31,7 +31,7 @@ func (pr *TransactionRepository) GetTransactions() ([]model.Transaction, error) 
 	var transactionObj model.Transaction
 
 	for rows.Next() {
-		err = rows.Scan(&transactionObj.ID, &transactionObj.Name, &transactionObj.Description, &transactionObj.Amount, &transactionObj.Type, &transactionObj.Category, &transactionObj.Date)
+		err = rows.Scan(&transactionObj.ID, &transactionObj.Name, &transactionObj.Description, &transactionObj.Amount, &transactionObj.Type, &transactionObj.Category, &transactionObj.Date, &transactionObj.CreatedAt)
 		if err != nil {
 			fmt.Println(err)
 			return []model.Transaction{}, err
