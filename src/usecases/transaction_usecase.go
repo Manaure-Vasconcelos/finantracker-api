@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"api-finantracker/src/model"
-	"api-finantracker/src/repository"
+	"api-finantracker/src/repositories"
 )
 
 type TransactionUsecase struct {

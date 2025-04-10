@@ -3,7 +3,7 @@ package main
 import (
 	"api-finantracker/src/controller"
 	"api-finantracker/src/db"
-	"api-finantracker/src/repository"
+	"api-finantracker/src/repositories"
 	"api-finantracker/src/usecase"
 
 	"github.com/gin-gonic/gin"
