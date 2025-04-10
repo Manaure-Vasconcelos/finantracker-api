@@ -18,3 +18,7 @@ func NewTransactionUsecase(repo repository.TransactionRepository) TransactionUse
 func (pu *TransactionUsecase) GetTransactions() ([]model.Transaction, error) {
 	return pu.repository.GetTransactions()
 }
+
+func (pu *TransactionUsecase) CreateTransaction(transaction model.Transaction) error {
+	return pu.repository.CreateTransaction(transaction)
+}

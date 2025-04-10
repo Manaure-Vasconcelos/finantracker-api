@@ -42,3 +42,14 @@ func (pr *TransactionRepository) GetTransactions() ([]model.Transaction, error) 
 
 	return transactionList, nil
 }
+
+func (pr *TransactionRepository) CreateTransaction(transaction model.Transaction) error {
+
+	_, err := pr.connection.Exec(context.Background(), "INSERT INTO transactions (name, description, amount, type, category, date) VALUES ($1, $2, $3, $4, $5, $6)", transaction.Name, transaction.Description, transaction.Amount, transaction.Type, transaction.Category, transaction.Date)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
+}

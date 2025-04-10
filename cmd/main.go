@@ -26,6 +26,7 @@ func main() {
 	TransactionController := controller.NewTransactionController(TransactionUsecase)
 
 	server.GET("/transaction", TransactionController.GetTransactions)
+	server.POST("/transaction", TransactionController.CreateTransaction)
 
 	server.Run(":8080")
 }

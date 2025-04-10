@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"api-finantracker/src/model"
 	"api-finantracker/src/usecase"
 	"net/http"
 
@@ -24,4 +25,20 @@ func (p *TransactionController) GetTransactions(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, transactions)
+}
+
+func (p * TransactionController) CreateTransaction(ctx *gin.Context) {
+	var transaction model.Transaction
+	if err := ctx.ShouldBindJSON(&transaction); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := p.transactionUsecase.CreateTransaction(transaction)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, transaction)
 }
